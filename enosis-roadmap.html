@@ -1,496 +1,188 @@
 <style>
   :root{
-    --ground:#14120f;
-    --surface:#1c1914;
-    --surface-2:#221e18;
-    --line:#3a352b;
-    --gold:#e3a53c;
-    --gold-dim:#9c7530;
-    --text:#efe9dd;
-    --muted:#9c9384;
-    --caution:#c96a44;
-    --caution-dim:#4a3327;
-    --good:#7f9e78;
-    --good-dim:#33402f;
-    --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif;
+    --bg:#0b0f07;
+    --ink:#eef0e6;
+    --muted:#8b9280;
+    --accent:#caff3e;
+    --accent-glow:rgba(202,255,62,0.25);
+    --line:#232a17;
+    --surface:#12160c;
+    --done:#7f9e78;
+    --done-dim:#2a3a26;
     --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', ui-sans-serif, Roboto, Helvetica, Arial, sans-serif;
+    --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif;
     --mono: ui-monospace, 'Cascadia Mono', 'SF Mono', Consolas, monospace;
   }
-
   .page{
-    background: var(--ground);
-    color: var(--text);
-    font-family: var(--sans);
-    max-width: 780px;
-    margin: 0 auto;
-    padding: 0 0 5rem 0;
-    line-height: 1.6;
-  }
-  .page *{ box-sizing: border-box; }
-
-  /* ---------- Slate header ---------- */
-  .slate{
-    padding: 3.2rem 2rem 2.4rem;
-    border-bottom: 1px solid var(--line);
     background:
-      radial-gradient(ellipse 480px 260px at 50% -40px, rgba(227,165,60,0.14), transparent 70%),
-      var(--ground);
-    text-align: center;
+      radial-gradient(ellipse 640px 320px at 50% -60px, var(--accent-glow), transparent 70%),
+      var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    max-width:760px;
+    margin:0 auto;
+    padding:3.5rem 2rem 5rem;
+    line-height:1.6;
   }
-  .slate-eyebrow{
-    font-family: var(--sans);
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1rem;
-  }
-  .slate h1{
-    font-family: var(--serif);
-    font-size: clamp(2.4rem, 6vw, 3.4rem);
-    font-weight: 400;
-    letter-spacing: 0.01em;
-    margin: 0 0 0.6rem;
-    text-wrap: balance;
-    color: var(--text);
-  }
-  .slate-sub{
-    font-size: 1.05rem;
-    color: var(--muted);
-    margin: 0 0 1.6rem;
-  }
-  .slate-meta{
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.6rem 1.6rem;
-    font-family: var(--mono);
-    font-size: 0.78rem;
-    color: var(--muted);
-    letter-spacing: 0.02em;
-  }
-  .slate-meta span{ position: relative; }
-  .slate-meta span + span::before{
-    content: '';
-    position: absolute;
-    left: -0.85rem;
-    top: 50%;
-    width: 3px; height: 3px;
-    border-radius: 50%;
-    background: var(--gold-dim);
-    transform: translateY(-50%);
-  }
+  .page *{ box-sizing:border-box; }
 
-  section{ padding: 2.6rem 2rem 0; }
-  h2{
-    font-family: var(--sans);
-    font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin: 0 0 1.2rem;
+  .eyebrow{
+    font-family:var(--mono); font-size:0.72rem; font-weight:700;
+    letter-spacing:0.22em; text-transform:uppercase; color:var(--accent);
+    text-align:center; margin-bottom:1rem;
   }
-  p{ margin: 0 0 1rem; color: var(--text); }
-  .lede{ color: var(--muted); font-size: 1rem; max-width: 62ch; }
+  h1{
+    font-family:var(--serif); font-weight:400; text-align:center;
+    font-size:clamp(2.2rem,6vw,3rem); margin:0 0 0.6rem; letter-spacing:0.01em;
+    text-wrap:balance;
+  }
+  .sub{ text-align:center; color:var(--muted); font-size:1.05rem; margin:0 0 2.2rem; }
 
-  /* ---------- Callouts ---------- */
-  .verdict{
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    background: var(--surface);
-    border: 1px solid var(--caution-dim);
-    border-left: 3px solid var(--caution);
-    padding: 1.1rem 1.3rem;
-    margin-bottom: 1.6rem;
+  .summary{
+    background:var(--surface);
+    border:1px solid var(--line);
+    padding:1.4rem 1.6rem;
+    margin-bottom:2.8rem;
   }
-  .verdict-tag{
-    font-family: var(--mono);
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--caution);
-    white-space: nowrap;
-    padding-top: 0.15rem;
+  .summary-top{
+    display:flex; justify-content:space-between; align-items:baseline; gap:1rem; flex-wrap:wrap;
+    margin-bottom:0.9rem;
   }
-  .verdict p{ margin: 0; color: var(--text); font-size: 0.96rem; }
-  .verdict strong{ color: var(--text); }
+  .summary-label{ font-family:var(--mono); font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); }
+  .summary-now{ font-family:var(--serif); font-size:1.3rem; color:var(--accent); }
+  .bar{ height:8px; background:var(--line); border-radius:4px; overflow:hidden; margin-bottom:0.6rem; }
+  .bar-fill{ height:100%; background:var(--accent); border-radius:4px; }
+  .bar-caption{ font-family:var(--mono); font-size:0.76rem; color:var(--muted); text-align:right; }
 
-  .table-wrap{ overflow-x: auto; margin-bottom: 1.8rem; }
-  table{
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.88rem;
-    min-width: 480px;
-  }
-  thead th{
-    text-align: left;
-    font-family: var(--sans);
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    padding: 0 0.8rem 0.6rem 0;
-    border-bottom: 1px solid var(--line);
-  }
-  tbody td{
-    padding: 0.75rem 0.8rem 0.75rem 0;
-    border-bottom: 1px solid var(--line);
-    vertical-align: top;
-    color: var(--text);
-  }
-  tbody tr:last-child td{ border-bottom: none; }
-  .cost{ font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--gold); white-space: nowrap; }
-  .row-note{ color: var(--muted); font-size: 0.85rem; }
-  .row-fit td:first-child{ color: var(--good); font-weight: 600; }
-
-  .recommend{
-    background: var(--surface-2);
-    border: 1px solid var(--line);
-    padding: 1.1rem 1.3rem;
-    font-size: 0.94rem;
-  }
-  .recommend .label{
-    display:block;
-    font-family: var(--mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--good);
-    margin-bottom: 0.4rem;
-  }
-  .recommend.warn .label{ color: var(--caution); }
-  .recommend.warn{ border-color: var(--caution-dim); }
-
-  /* ---------- Timeline ---------- */
-  .timeline{ position: relative; }
-  .phase{
-    position: relative;
-    padding: 0 0 0 2rem;
-    margin-bottom: 2.2rem;
-    border-left: 1px solid var(--line);
-  }
-  .phase:last-child{ margin-bottom: 0; }
-  .phase::before{
-    content: '';
-    position: absolute;
-    left: -5px;
-    top: 0.35rem;
-    width: 9px; height: 9px;
-    border-radius: 50%;
-    background: var(--ground);
-    border: 2px solid var(--gold);
-  }
-  .phase.sub::before{ border-color: var(--gold-dim); width:7px; height:7px; left:-4px; }
-  .phase-head{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.6rem 0.9rem;
-    margin-bottom: 0.5rem;
-  }
-  .phase-num{
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    color: var(--gold-dim);
-    letter-spacing: 0.05em;
-  }
-  .phase-title{
-    font-family: var(--serif);
-    font-size: 1.3rem;
-    color: var(--text);
-  }
-  .phase.sub .phase-title{ font-size: 1.05rem; }
-  .phase-meta{
+  .stages{ display:flex; flex-direction:column; }
+  .stage{
+    position:relative;
     display:flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-    font-family: var(--mono);
-    font-size: 0.76rem;
-    color: var(--muted);
-    margin-bottom: 0.7rem;
+    gap:1.1rem;
+    padding:0 0 1.8rem 0;
   }
-  .chip{
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-family: var(--sans);
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 0.22rem 0.55rem;
-    border: 1px solid;
+  .stage:last-child{ padding-bottom:0; }
+  .stage-rail{
+    display:flex; flex-direction:column; align-items:center; flex-shrink:0; width:14px;
   }
-  .chip.you{ color: var(--good); border-color: var(--good-dim); background: rgba(127,158,120,0.08); }
-  .chip.delegate{ color: var(--gold); border-color: var(--gold-dim); background: rgba(227,165,60,0.08); }
-  .phase ul{ margin: 0.6rem 0 0; padding-left: 1.1rem; color: var(--text); font-size: 0.94rem; }
-  .phase li{ margin-bottom: 0.35rem; }
-  .phase li::marker{ color: var(--gold-dim); }
+  .dot{
+    width:14px; height:14px; border-radius:50%;
+    border:2px solid var(--line); background:var(--bg); flex-shrink:0; margin-top:0.2rem;
+  }
+  .stage.done .dot{ background:var(--done); border-color:var(--done); }
+  .stage.active .dot{ background:var(--accent); border-color:var(--accent); box-shadow:0 0 0 4px var(--accent-glow); }
+  .stage-line{ flex:1; width:1.5px; background:var(--line); margin-top:0.2rem; }
+  .stage.done .stage-line{ background:var(--done-dim); }
+  .stage:last-child .stage-line{ display:none; }
 
-  /* ---------- Learn / Own lists ---------- */
-  .card-list{
-    display: grid;
-    gap: 0.7rem;
+  .stage-body{ flex:1; padding-bottom:0.2rem; }
+  .stage-head{ display:flex; align-items:center; gap:0.7rem; flex-wrap:wrap; margin-bottom:0.35rem; }
+  .stage-title{ font-weight:700; font-size:1rem; color:var(--ink); }
+  .pill{
+    font-family:var(--mono); font-size:0.62rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+    padding:0.18rem 0.55rem; border-radius:20px; border:1px solid;
   }
-  .card-item{
-    display: flex;
-    gap: 0.9rem;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    padding: 0.85rem 1rem;
-  }
-  .card-item .mark{
-    font-family: var(--mono);
-    color: var(--gold);
-    font-size: 0.85rem;
-    flex-shrink: 0;
-  }
-  .card-item p{ margin: 0; font-size: 0.92rem; color: var(--text); }
-  .card-item .sub{ color: var(--muted); font-size: 0.85rem; margin-top: 0.2rem; }
+  .pill.done{ color:var(--done); border-color:var(--done-dim); background:rgba(127,158,120,0.1); }
+  .pill.active{ color:var(--accent); border-color:var(--accent); background:rgba(202,255,62,0.1); }
+  .pill.planned{ color:var(--muted); border-color:var(--line); }
+  .stage-desc{ color:var(--muted); font-size:0.92rem; max-width:56ch; }
 
-  footer{
-    margin: 3rem 2rem 0;
-    padding-top: 1.6rem;
-    border-top: 1px solid var(--line);
-    color: var(--muted);
-    font-size: 0.92rem;
+  .about{
+    margin-top:3.2rem; padding-top:2rem; border-top:1px solid var(--line);
+    color:var(--muted); font-size:0.92rem;
   }
-  footer strong{ color: var(--text); }
+  .about strong{ color:var(--ink); }
 
-  @media (prefers-reduced-motion: no-preference){
-    .phase, .verdict, .card-item{ transition: border-color 0.2s ease; }
-  }
+  footer{ text-align:center; color:var(--muted); font-size:0.78rem; margin-top:2.6rem; font-family:var(--mono); }
 </style>
 
 <div class="page">
 
-  <header class="slate">
-    <div class="slate-eyebrow">Production Roadmap</div>
-    <h1>Spotlight Enosis</h1>
-    <p class="slate-sub">Path to a free-launch MVP — built by you, with Claude Code</p>
-    <div class="slate-meta">
-      <span>Updated 2 Jul 2026</span>
-      <span>Self-build with Claude Code</span>
-      <span>Target ship: mid-Aug 2026</span>
-    </div>
-  </header>
+  <div class="eyebrow">Production Status</div>
+  <h1>Spotlight Enosis</h1>
+  <p class="sub">A social app for finding people who share your creative passions.</p>
 
-  <section class="budget-section">
-    <h2>What changed — you're building this yourself now</h2>
-    <div class="verdict">
-      <span class="verdict-tag">Update</span>
-      <p><strong>The main cost is no longer money — it's your time and attention.</strong> With Claude Code doing the actual coding alongside you, the $2,000–$3,100 Fiverr estimate from before mostly goes away. What's left is small, predictable infra cost, plus a real time commitment from you to test, decide, and steer as it's built. Fiverr stays in your back pocket (your Option 2) for later — v1.1 features, or if you get stuck on something.</p>
+  <div class="summary">
+    <div class="summary-top">
+      <span class="summary-label">Current stage</span>
+      <span class="summary-now">Environment Setup</span>
     </div>
+    <div class="bar"><div class="bar-fill" style="width:12%;"></div></div>
+    <div class="bar-caption">1 of 8 stages complete</div>
+  </div>
 
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th>Cost</th><th>Amount</th><th>Notes</th></tr>
-        </thead>
-        <tbody>
-          <tr class="row-fit">
-            <td>Supabase</td>
-            <td class="cost">$0/mo</td>
-            <td class="row-note">Free tier easily covers an MVP's worth of users, posts, and messages</td>
-          </tr>
-          <tr class="row-fit">
-            <td>Vercel hosting</td>
-            <td class="cost">$0/mo</td>
-            <td class="row-note">Free tier is fine until you have real, meaningful traffic</td>
-          </tr>
-          <tr>
-            <td>Domain name</td>
-            <td class="cost">~$12/yr</td>
-            <td class="row-note">Optional for MVP testing — can launch on a Vercel subdomain first</td>
-          </tr>
-          <tr>
-            <td>Your Claude Code plan</td>
-            <td class="cost">already have it</td>
-            <td class="row-note">This is genuinely the main "cost" now — it's what replaces the freelancer</td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="stages">
+
+    <div class="stage done">
+      <div class="stage-rail"><div class="dot"></div><div class="stage-line"></div></div>
+      <div class="stage-body">
+        <div class="stage-head"><span class="stage-title">Planning &amp; Design</span><span class="pill done">Complete</span></div>
+        <div class="stage-desc">Concept, feature scope, and a full screen-by-screen layout of the app finalized.</div>
+      </div>
     </div>
 
-    <div class="recommend">
-      <span class="label">Recommended move</span>
-      Keep the ~$2,000–$3,100 you'd budgeted for Fiverr as a reserve, not a spend. Use it later for v1.1 (Projects board, group chat + AI, Team/Studio accounts) or to hire out anything you get genuinely stuck on — not as a starting assumption.
-    </div>
-
-    <div class="recommend warn" style="margin-top:1rem;">
-      <span class="label">Honest expectation</span>
-      Claude Code writing the code doesn't mean zero effort on your side. You'll still need to run it, click through it, describe what looks wrong, and make product calls at each step. Budget real, regular time — a few focused sessions a week beats one long session, since you'll be learning the shape of the app as it comes together.
-    </div>
-  </section>
-
-  <section class="setup-note-section">
-    <h2>Before phase 0 — where you actually build this</h2>
-    <div class="verdict">
-      <span class="verdict-tag">Important</span>
-      <p>This planning conversation isn't running inside your project. Open (or create) a dedicated project folder in VS Code — e.g. <strong>Documents\spotlight-enosis</strong> — and start Claude Code there. That folder, connected to your GitHub repo, is where the actual app gets built.</p>
-    </div>
-  </section>
-
-  <section class="timeline-section">
-    <h2>The path, phase by phase</h2>
-    <div class="timeline">
-
-      <div class="phase">
-        <div class="phase-head">
-          <span class="phase-num">PHASE 0</span>
-          <span class="phase-title">Environment Setup</span>
-        </div>
-        <div class="phase-meta"><span>1–3 days</span><span class="chip you">You + Claude Code</span><span>$0</span></div>
-        <ul>
-          <li>Create a project folder (not this system32 session) and open it in VS Code</li>
-          <li>Create a new GitHub repository, connect it to the folder</li>
-          <li>Copy your <strong>CLAUDE.md</strong> brief and the wireframe reference into the repo root — Claude Code reads this automatically every session from here on</li>
-          <li>Create a free Supabase project and a free Vercel account, link Vercel to the GitHub repo for auto-deploy on every push</li>
-          <li>Have Claude Code scaffold the Next.js app and wire up Supabase keys as environment variables — confirm together that secrets are <strong>never</strong> committed to GitHub</li>
-          <li>First deploy: even a blank homepage live on a Vercel URL is a real milestone — it proves the whole pipeline works</li>
-        </ul>
-      </div>
-
-      <div class="phase sub">
-        <div class="phase-head">
-          <span class="phase-num">PHASE 1.1</span>
-          <span class="phase-title">Onboarding</span>
-        </div>
-        <div class="phase-meta"><span>3–5 days</span><span class="chip you">You + Claude Code</span></div>
-        <ul>
-          <li>Register/login/forgot-password via Supabase Auth</li>
-          <li>The one-step setup screen — passion tags + city</li>
-          <li>The "add your first Post" nudge</li>
-        </ul>
-      </div>
-
-      <div class="phase sub">
-        <div class="phase-head">
-          <span class="phase-num">PHASE 1.2</span>
-          <span class="phase-title">Profile</span>
-        </div>
-        <div class="phase-meta"><span>4–6 days</span><span class="chip you">You + Claude Code</span></div>
-        <ul>
-          <li>Own profile (edit) and public profile (view) states</li>
-          <li>Photo upload to Supabase Storage, Posts grid</li>
-        </ul>
-      </div>
-
-      <div class="phase sub">
-        <div class="phase-head">
-          <span class="phase-num">PHASE 1.3</span>
-          <span class="phase-title">Network</span>
-        </div>
-        <div class="phase-meta"><span>4–6 days</span><span class="chip you">You + Claude Code</span></div>
-        <ul>
-          <li>The main feed — everyone's Posts, filterable by passion tag and city</li>
-          <li>This is the tab that opens by default after login</li>
-        </ul>
-      </div>
-
-      <div class="phase sub">
-        <div class="phase-head">
-          <span class="phase-num">PHASE 1.4</span>
-          <span class="phase-title">Chat</span>
-        </div>
-        <div class="phase-meta"><span>3–5 days</span><span class="chip you">You + Claude Code</span></div>
-        <ul>
-          <li>Direct 1:1 messaging on Supabase real-time</li>
-          <li>Chat inbox + conversation view</li>
-        </ul>
-      </div>
-
-      <div class="phase sub">
-        <div class="phase-head">
-          <span class="phase-num">PHASE 1.5</span>
-          <span class="phase-title">Settings &amp; Safety</span>
-        </div>
-        <div class="phase-meta"><span>2–4 days</span><span class="chip you">You + Claude Code</span></div>
-        <ul>
-          <li>Account info, one visibility toggle, delete account (type-to-confirm)</li>
-          <li>Report/block — treat as required, not optional, before any real users touch this</li>
-        </ul>
-      </div>
-
-      <div class="phase">
-        <div class="phase-head">
-          <span class="phase-num">PHASE 2</span>
-          <span class="phase-title">Release</span>
-        </div>
-        <div class="phase-meta"><span>3–5 days</span><span class="chip you">You</span></div>
-        <ul>
-          <li>Soft-launch to a small test group — local creator meetups, musician/filmmaker Discords</li>
-          <li>Fix what breaks with Claude Code's help</li>
-          <li>Open it up publicly once the loop — profile, Network, chat — feels solid</li>
-        </ul>
-      </div>
-
-      <div class="phase">
-        <div class="phase-head">
-          <span class="phase-num">LATER</span>
-          <span class="phase-title">Option 2, Held in Reserve</span>
-        </div>
-        <div class="phase-meta"><span>Post-launch</span><span class="chip delegate">Delegate (Fiverr)</span><span>~$3,000–6,000+</span></div>
-        <ul>
-          <li>Projects board, video Posts, Team/Studio premium accounts — the v1.1 list</li>
-          <li>Or: hire out anything specific you get stuck on, instead of the whole build</li>
-          <li>Your original cost estimates for these are still accurate if you go this route later</li>
-        </ul>
-      </div>
-
-    </div>
-  </section>
-
-  <section class="learn-section">
-    <h2>What to learn — you're driving now, not just overseeing</h2>
-    <div class="card-list">
-      <div class="card-item">
-        <span class="mark">→</span>
-        <p>How to run the app locally (<code>npm run dev</code>) and actually click through it in your browser after each change.
-          <span class="sub">This is your main feedback loop — don't just trust that code was written, look at it running.</span></p>
-      </div>
-      <div class="card-item">
-        <span class="mark">→</span>
-        <p>Git basics: commit and push, and commit often.
-          <span class="sub">Every commit is an undo point. If Claude Code's next change breaks something, you can always go back.</span></p>
-      </div>
-      <div class="card-item">
-        <span class="mark">→</span>
-        <p>How to describe a problem without needing to fix it yourself — what you did, what you expected, what happened instead.
-          <span class="sub">You're the tester, not the engineer. A clear description is enough.</span></p>
-      </div>
-      <div class="card-item">
-        <span class="mark">→</span>
-        <p>Roughly what each piece of the stack does: Next.js is what you see, Supabase is your data and logins, Vercel is where it lives online.
-          <span class="sub">Enough to know which layer a problem is probably in when something goes wrong.</span></p>
-      </div>
-      <div class="card-item">
-        <span class="mark">→</span>
-        <p>Why secrets (API keys, database passwords) never get committed to GitHub, and how <code>.env</code> files keep them out.
-          <span class="sub">A real security basic — a leaked key is a real-world problem, not a hypothetical one.</span></p>
+    <div class="stage active">
+      <div class="stage-rail"><div class="dot"></div><div class="stage-line"></div></div>
+      <div class="stage-body">
+        <div class="stage-head"><span class="stage-title">Environment Setup</span><span class="pill active">In Progress</span></div>
+        <div class="stage-desc">Connecting the project's codebase, database, and hosting so building can begin.</div>
       </div>
     </div>
-  </section>
 
-  <section class="own-section">
-    <h2>What you own</h2>
-    <div class="card-list">
-      <div class="card-item"><span class="mark">•</span><p>Domain name registrar account (when you get one)</p></div>
-      <div class="card-item"><span class="mark">•</span><p>Vercel hosting account</p></div>
-      <div class="card-item"><span class="mark">•</span><p>Supabase project</p></div>
-      <div class="card-item"><span class="mark">•</span><p>GitHub repository</p></div>
-      <div class="card-item"><span class="mark">•</span><p>Your Claude Code / Anthropic account</p></div>
-      <div class="card-item"><span class="mark">•</span><p>The trademark filing itself, handled separately from the build</p></div>
+    <div class="stage">
+      <div class="stage-rail"><div class="dot"></div><div class="stage-line"></div></div>
+      <div class="stage-body">
+        <div class="stage-head"><span class="stage-title">Onboarding</span><span class="pill planned">Planned</span></div>
+        <div class="stage-desc">Creating an account and setting up a profile for the first time.</div>
+      </div>
     </div>
-  </section>
 
-  <footer>
-    <strong>Next step:</strong> open your real project folder in VS Code, start a Claude Code session there, and begin Phase 0 — repo, Supabase, Vercel, and the first deploy. Bring the CLAUDE.md brief and the wireframe artifact link with you; that session should be able to work from both directly.
-  </footer>
+    <div class="stage">
+      <div class="stage-rail"><div class="dot"></div><div class="stage-line"></div></div>
+      <div class="stage-body">
+        <div class="stage-head"><span class="stage-title">Profile</span><span class="pill planned">Planned</span></div>
+        <div class="stage-desc">Personal pages showcasing passions and posted work.</div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-rail"><div class="dot"></div><div class="stage-line"></div></div>
+      <div class="stage-body">
+        <div class="stage-head"><span class="stage-title">Network</span><span class="pill planned">Planned</span></div>
+        <div class="stage-desc">Discovering other members through their posted work, by shared passion and location.</div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-rail"><div class="dot"></div><div class="stage-line"></div></div>
+      <div class="stage-body">
+        <div class="stage-head"><span class="stage-title">Chat</span><span class="pill planned">Planned</span></div>
+        <div class="stage-desc">Direct messaging between members who've found each other.</div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-rail"><div class="dot"></div><div class="stage-line"></div></div>
+      <div class="stage-body">
+        <div class="stage-head"><span class="stage-title">Settings &amp; Safety</span><span class="pill planned">Planned</span></div>
+        <div class="stage-desc">Account controls, privacy, and reporting tools.</div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-rail"><div class="dot"></div></div>
+      <div class="stage-body">
+        <div class="stage-head"><span class="stage-title">Launch</span><span class="pill planned">Planned</span></div>
+        <div class="stage-desc">First release to an early group of testers.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="about">
+    <strong>About Spotlight Enosis:</strong> a social app connecting people across the entertainment and creative world — in front of the camera and behind it — so they can find collaborators who share their taste and passion, and build something together.
+  </div>
+
+  <footer>Updated 3 Jul 2026</footer>
 
 </div>
