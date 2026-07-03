@@ -1,0 +1,613 @@
+<style>
+  :root{
+    --page-bg:#0b0f07;
+    --ink:#eef0e6;
+    --muted:#8b9280;
+    --accent:#caff3e;
+    --accent-glow:rgba(202,255,62,0.25);
+    --line:#232a17;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', ui-sans-serif, Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, 'Cascadia Mono', 'SF Mono', Consolas, monospace;
+
+    --wf-border:#262626;
+    --wf-fill:#e6e6e6;
+    --wf-fill-2:#d2d2d2;
+    --wf-text:#8a8a8a;
+    --wf-bg:#ffffff;
+  }
+  .page{
+    background:
+      radial-gradient(ellipse 640px 320px at 50% -60px, var(--accent-glow), transparent 70%),
+      var(--page-bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    max-width: 1080px;
+    margin:0 auto;
+    padding: 3rem 2rem 5rem;
+    line-height:1.55;
+  }
+  .page *{ box-sizing:border-box; }
+
+  .doc-head{ margin-bottom:1.6rem; }
+  .doc-eyebrow{
+    font-family:var(--mono); font-size:0.72rem; font-weight:700;
+    letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); margin-bottom:0.7rem;
+  }
+  .doc-head h1{ font-size: clamp(1.9rem,4vw,2.6rem); margin:0 0 0.5rem; letter-spacing:-0.01em; }
+  .doc-head p{ color:var(--muted); max-width:64ch; margin:0; font-size:1rem; }
+
+  .changelog{
+    background:#12160c; border:1px solid var(--line); border-left:3px solid var(--accent);
+    padding:0.9rem 1.2rem; margin:1.6rem 0 2.4rem; font-size:0.88rem;
+  }
+  .changelog .label{ font-family:var(--mono); font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:0.5rem; }
+  .changelog ul{ margin:0; padding-left:1.1rem; }
+  .changelog li{ margin-bottom:0.3rem; }
+  .changelog li::marker{ color:var(--accent); }
+  .changelog.cut{ border-left-color:#e2795a; margin-top:1rem; }
+  .changelog.cut .label{ color:#e2795a; }
+  .changelog.cut li::marker{ color:#e2795a; }
+
+  /* ---- Table of contents ---- */
+  .toc{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+    gap:0.4rem 1.5rem;
+    background:#12160c;
+    border:1px solid var(--line);
+    padding:1.2rem 1.4rem;
+    margin: 0 0 3.2rem;
+  }
+  .toc a{
+    color:var(--ink); text-decoration:none; font-size:0.9rem;
+    display:flex; gap:0.5rem; border-bottom:1px dotted transparent;
+  }
+  .toc a:hover{ border-bottom-color: var(--accent); color:var(--accent); }
+  .toc .n{ font-family:var(--mono); color:var(--accent); font-size:0.8rem; flex-shrink:0; }
+
+  /* ---- Section ---- */
+  .section{ margin-bottom: 3.6rem; scroll-margin-top: 1.5rem; }
+  .section-head{ margin-bottom:1.4rem; border-bottom:1px solid var(--line); padding-bottom:0.9rem; }
+  .section-eyebrow{
+    font-family:var(--mono); font-size:0.7rem; font-weight:700; letter-spacing:0.16em;
+    text-transform:uppercase; color:var(--accent); margin-bottom:0.35rem;
+  }
+  .section-head h2{ font-size:1.5rem; margin:0 0 0.3rem; }
+  .section-head p{ color:var(--muted); margin:0; font-size:0.94rem; max-width:70ch; }
+
+  .wf-grid{ display:flex; flex-wrap:wrap; gap:2rem; align-items:flex-start; }
+  .wf-block{ width:250px; }
+  .wf-caption{ margin-top:0.7rem; }
+  .wf-caption .num{ font-family:var(--mono); font-size:0.72rem; color:var(--accent); }
+  .wf-caption .name{ font-weight:600; font-size:0.92rem; display:block; margin:0.15rem 0 0.35rem; }
+  .wf-caption .note{ font-size:0.82rem; color:var(--muted); }
+  .wf-caption .note strong{ color:var(--ink); }
+
+  /* ---- Wireframe frame system (grayscale, low-fi) ---- */
+  .wf-frame{
+    width:250px; min-height:470px;
+    background:var(--wf-bg);
+    border:1.5px solid var(--wf-border);
+    border-radius:10px;
+    overflow:hidden;
+    display:flex; flex-direction:column;
+    font-family:var(--sans);
+    box-shadow: 0 0 32px -12px var(--accent-glow);
+  }
+  .wf-frame.modal{ min-height:auto; }
+  .wf-frame.tall{ min-height:560px; }
+  .wf-appbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0.65rem 0.8rem; border-bottom:1.5px solid var(--wf-border);
+    font-size:0.72rem; color:var(--wf-border); font-weight:600; flex-shrink:0;
+  }
+  .wf-appbar .icon{ color:var(--wf-text); font-family:var(--mono); font-size:0.68rem; }
+  .wf-body{ flex:1; padding:0.75rem; display:flex; flex-direction:column; gap:0.6rem; overflow:hidden; }
+  .wf-body.pad-0{ padding:0; }
+  .wf-body.scroll{ overflow-y:auto; }
+
+  .wf-search{
+    border:1.3px solid #9c9c9c; border-radius:7px; background:var(--wf-fill);
+    padding:0.45rem 0.6rem; font-size:0.68rem; color:var(--wf-text);
+  }
+  .wf-chiprow{ display:flex; flex-wrap:wrap; gap:0.35rem; }
+  .wf-chip{
+    border:1.2px solid var(--wf-border); border-radius:20px; padding:0.2rem 0.55rem;
+    font-size:0.62rem; color:var(--wf-border); white-space:nowrap;
+  }
+  .wf-chip.ghost{ border-style:dashed; color:var(--wf-text); border-color:#aaa; }
+  .wf-chip.solid{ background:var(--accent); border-color:var(--accent); color:#111; font-weight:700; }
+
+  .wf-card{ display:flex; gap:0.55rem; padding:0.55rem 0; border-bottom:1px solid #eee; align-items:flex-start; }
+  .wf-avatar{
+    border-radius:50%; background:var(--wf-fill); border:1.2px solid #999;
+    flex-shrink:0; display:flex; align-items:center; justify-content:center;
+    font-size:0.55rem; color:var(--wf-text); font-family:var(--mono);
+  }
+  .wf-avatar.sm{ width:30px; height:30px; }
+  .wf-avatar.md{ width:52px; height:52px; }
+  .wf-avatar.lg{ width:84px; height:84px; font-size:0.6rem; }
+
+  .wf-lines{ display:flex; flex-direction:column; gap:0.28rem; flex:1; min-width:0; }
+  .wf-line{ height:7px; background:var(--wf-fill); border-radius:3px; }
+  .wf-line.dark{ background:var(--wf-fill-2); }
+  .w-100{ width:100%; } .w-85{ width:85%; } .w-70{ width:70%; } .w-55{ width:55%; } .w-40{ width:40%; } .w-30{ width:30%; }
+
+  .wf-label{ font-size:0.6rem; color:var(--wf-text); font-family:var(--mono); text-transform:uppercase; letter-spacing:0.04em; }
+  .wf-text{ font-size:0.68rem; color:#555; }
+
+  .wf-imgbox{
+    background:var(--wf-fill); border:1.2px solid #999; border-radius:6px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.6rem; color:var(--wf-text); font-family:var(--mono);
+  }
+
+  .wf-btn{
+    border:1.4px solid var(--wf-border); border-radius:6px; text-align:center;
+    padding:0.45rem; font-size:0.68rem; font-weight:600; color:var(--wf-border);
+  }
+  .wf-btn.primary{ background:var(--wf-border); color:#fff; }
+  .wf-btn.small{ padding:0.3rem 0.6rem; font-size:0.6rem; display:inline-block; }
+  .wf-btn.danger{ border-color:#8a4a3a; color:#8a4a3a; }
+
+  .wf-input{
+    border:1.2px solid #9c9c9c; border-radius:6px; padding:0.5rem 0.6rem;
+    font-size:0.66rem; color:var(--wf-text); background:#fff;
+  }
+  .wf-input .fill{ color:#333; }
+
+  .wf-divider{ height:1px; background:#e5e5e5; margin:0.1rem 0; }
+  .wf-pill{
+    border:1.2px solid var(--wf-border); border-radius:20px; padding:0.12rem 0.5rem;
+    font-size:0.6rem; font-weight:700; color:var(--wf-border); display:inline-flex; align-items:center; gap:0.2rem;
+  }
+
+  .wf-tabbar{
+    display:flex; border-top:1.5px solid var(--wf-border); flex-shrink:0;
+  }
+  .wf-tabbar .tab{
+    flex:1; text-align:center; padding:0.5rem 0.15rem; font-size:0.58rem;
+    font-family:var(--mono); color:var(--wf-text); text-transform:uppercase; letter-spacing:0.02em;
+    border-right:1px solid #eee;
+  }
+  .wf-tabbar .tab:last-child{ border-right:none; }
+  .wf-tabbar .tab.active{ color:var(--wf-border); font-weight:700; }
+
+  .wf-row{ display:flex; align-items:center; justify-content:space-between; gap:0.5rem; }
+  .wf-row-item{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0.6rem 0; border-bottom:1px solid #eee; font-size:0.68rem; color:var(--wf-border);
+  }
+  .wf-row-item .arrow{ color:var(--wf-text); }
+  .wf-toggle{
+    width:28px; height:16px; border:1.2px solid var(--wf-border); border-radius:10px; position:relative; flex-shrink:0;
+  }
+  .wf-toggle::after{ content:''; position:absolute; width:11px; height:11px; border-radius:50%; background:var(--wf-border); top:1.2px; }
+  .wf-toggle.on::after{ right:1.2px; }
+  .wf-toggle.off::after{ left:1.2px; background:#ccc; }
+
+  .wf-msg{ max-width:78%; padding:0.4rem 0.55rem; border-radius:9px; font-size:0.63rem; color:#444; }
+  .wf-msg.in{ background:var(--wf-fill); align-self:flex-start; border:1px solid #ddd; }
+  .wf-msg.out{ background:var(--wf-border); color:#fff; align-self:flex-end; }
+  .wf-msg-col{ display:flex; flex-direction:column; gap:0.45rem; flex:1; overflow:hidden; }
+
+  /* ---- Reels-style discovery card ---- */
+  .wf-reel{
+    position:relative; flex:1; background:var(--wf-fill); border:1.2px solid #999;
+    border-radius:8px; display:flex; align-items:flex-end; overflow:hidden; min-height:280px;
+  }
+  .wf-reel .center-label{ position:absolute; top:44%; left:0; right:0; text-align:center; font-family:var(--mono); font-size:0.62rem; color:var(--wf-text); }
+  .wf-reel .overlay{
+    position:relative; width:100%; padding:0.6rem; background:linear-gradient(transparent, rgba(0,0,0,0.06));
+    display:flex; flex-direction:column; gap:0.3rem;
+  }
+  .wf-reel .overlay .wf-line{ background:#bdbdbd; }
+  .wf-reel-icons{ position:absolute; right:0.5rem; top:0.6rem; display:flex; flex-direction:column; gap:0.5rem; }
+  .wf-reel-icons span{ font-family:var(--mono); font-size:0.6rem; color:#555; background:#fff; border:1px solid #999; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; }
+
+  /* ---- Post grid ---- */
+  .wf-postgrid{ display:grid; grid-template-columns:repeat(3,1fr); gap:0.3rem; }
+  .wf-postgrid .cell{ aspect-ratio:1; background:var(--wf-fill); border:1px solid #ccc; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:0.5rem; color:var(--wf-text); font-family:var(--mono); }
+
+  footer.doc-footer{ margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--line); color:var(--muted); font-size:0.9rem; }
+  footer.doc-footer strong{ color:var(--ink); }
+</style>
+
+<div class="page">
+
+  <div class="doc-head">
+    <div class="doc-eyebrow">Wireframe Spec — v3, Minimal MVP</div>
+    <h1>Spotlight Enosis — MVP Page Layouts</h1>
+    <p>Trimmed to exactly what's required to prove the core idea: youthful people, in a modern app, finding others who share their passion — through authentic work, not résumés or job listings. Three tabs. Nothing else.</p>
+  </div>
+
+  <div class="changelog">
+    <span class="label">What's in this MVP</span>
+    <ul>
+      <li><strong>Network</strong> — one feed, everyone's Posts, filtered by passion tag + city. This is the app's home screen.</li>
+      <li><strong>Profile</strong> — identity + passion tags + your Posts grid. That's the whole profile.</li>
+      <li><strong>Chat</strong> — direct 1:1 messaging only.</li>
+      <li><strong>Settings &amp; Safety</strong> — account basics, one privacy toggle, delete account, report/block.</li>
+    </ul>
+  </div>
+  <div class="changelog cut">
+    <span class="label">Deliberately cut, not just deferred for time</span>
+    <ul>
+      <li><strong>Projects board</strong> — this is Backstage's core mechanic; keeping it risks reading as a weaker copy.</li>
+      <li><strong>Skills &amp; Credits, Work History, Rating</strong> — résumé-style formalism that undercuts a youthful, authentic-first app. Posts are the credibility signal instead.</li>
+      <li><strong>Spotlight pins, Notifications feed, group chat + AI assistant</strong> — real ideas, resequenced to v1.1 once the core discovery loop is proven with real users.</li>
+    </ul>
+  </div>
+
+  <div class="toc">
+    <a href="#onboarding"><span class="n">01</span> Onboarding</a>
+    <a href="#network"><span class="n">02</span> Network</a>
+    <a href="#profile"><span class="n">03</span> Profile</a>
+    <a href="#messaging"><span class="n">04</span> Chat</a>
+    <a href="#settings"><span class="n">05</span> Settings</a>
+    <a href="#safety"><span class="n">06</span> Safety</a>
+  </div>
+
+  <!-- ================= ONBOARDING ================= -->
+  <section class="section" id="onboarding">
+    <div class="section-head">
+      <div class="section-eyebrow">01 — Onboarding</div>
+      <h2>Register, Login &amp; One Setup Step</h2>
+      <p>No multi-screen questionnaire. One step — passions + city — then straight into the app, nudged to post something right away.</p>
+    </div>
+    <div class="wf-grid">
+
+      <div class="wf-block">
+        <div class="wf-frame">
+          <div class="wf-appbar"><span>Spotlight Enosis</span></div>
+          <div class="wf-body">
+            <div class="wf-line dark w-70" style="height:14px;margin-bottom:0.3rem;"></div>
+            <div class="wf-label">Full name</div>
+            <div class="wf-input">&nbsp;</div>
+            <div class="wf-label">Email</div>
+            <div class="wf-input">&nbsp;</div>
+            <div class="wf-label">Password</div>
+            <div class="wf-input">&nbsp;</div>
+            <div class="wf-btn primary" style="margin-top:0.4rem;">Create account</div>
+            <div class="wf-chip ghost" style="align-self:center;margin-top:0.3rem;">or continue with Google</div>
+            <div class="wf-text" style="text-align:center;margin-top:auto;">Already have an account? <strong>Log in</strong></div>
+          </div>
+        </div>
+        <div class="wf-caption">
+          <span class="num">1.1</span><span class="name">Register</span>
+          <div class="note">Email + Google OAuth.</div>
+        </div>
+      </div>
+
+      <div class="wf-block">
+        <div class="wf-frame">
+          <div class="wf-appbar"><span>Spotlight Enosis</span></div>
+          <div class="wf-body">
+            <div class="wf-line dark w-55" style="height:14px;margin-bottom:0.3rem;"></div>
+            <div class="wf-label">Email</div>
+            <div class="wf-input">&nbsp;</div>
+            <div class="wf-label">Password</div>
+            <div class="wf-input">&nbsp;</div>
+            <div class="wf-text" style="text-align:right;">Forgot password?</div>
+            <div class="wf-btn primary" style="margin-top:0.4rem;">Log in</div>
+          </div>
+        </div>
+        <div class="wf-caption">
+          <span class="num">1.2</span><span class="name">Login</span>
+          <div class="note">Returning users land straight on Network.</div>
+        </div>
+      </div>
+
+      <div class="wf-block">
+        <div class="wf-frame">
+          <div class="wf-appbar"><span></span><span>Set up</span><span></span></div>
+          <div class="wf-body">
+            <div class="wf-line dark w-85" style="height:14px;"></div>
+            <div class="wf-text">Pick up to 3 passions</div>
+            <div class="wf-chiprow">
+              <div class="wf-chip">Director</div><div class="wf-chip">Actor</div>
+              <div class="wf-chip">Editor</div><div class="wf-chip">Composer</div>
+              <div class="wf-chip">YouTuber</div><div class="wf-chip">Dancer</div>
+              <div class="wf-chip ghost">+ more</div>
+            </div>
+            <div class="wf-text" style="margin-top:0.3rem;">Your city</div>
+            <div class="wf-input"><span class="fill">City, State</span></div>
+            <div class="wf-btn primary" style="margin-top:auto;">Done</div>
+          </div>
+        </div>
+        <div class="wf-caption">
+          <span class="num">1.3</span><span class="name">Set up — passions &amp; city</span>
+          <div class="note">One screen, one step. Powers the Network filter directly.</div>
+        </div>
+      </div>
+
+      <div class="wf-block">
+        <div class="wf-frame">
+          <div class="wf-appbar"><span></span><span></span><span class="icon">Skip</span></div>
+          <div class="wf-body" style="align-items:center;text-align:center;justify-content:center;">
+            <div class="wf-imgbox" style="width:80px;height:80px;border-radius:50%;">+ post</div>
+            <div class="wf-line dark w-70"></div>
+            <div class="wf-text">Add a photo or clip of your work — this is what people will actually see first.</div>
+            <div class="wf-btn primary" style="width:100%;">Add your first Post</div>
+          </div>
+        </div>
+        <div class="wf-caption">
+          <span class="num">1.4</span><span class="name">Add your first Post</span>
+          <div class="note">Skippable, but strongly nudged — an empty profile is a bad first impression on a Posts-first app.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= NETWORK ================= -->
+  <section class="section" id="network">
+    <div class="section-head">
+      <div class="section-eyebrow">02 — Network</div>
+      <h2>Find People, Through Their Posts</h2>
+      <p>The app's home screen. One feed, everyone's authentic work, filtered by passion and city — not a résumé search.</p>
+    </div>
+    <div class="wf-grid">
+
+      <div class="wf-block">
+        <div class="wf-frame">
+          <div class="wf-appbar"><span>Network</span><span class="icon">[Filters]</span></div>
+          <div class="wf-body pad-0" style="padding:0.6rem;">
+            <div class="wf-reel">
+              <div class="center-label">POST (photo / video)</div>
+              <div class="wf-reel-icons"><span>♥</span><span>↪</span></div>
+              <div class="overlay">
+                <div class="wf-line w-40"></div>
+                <div class="wf-chip solid" style="align-self:flex-start;">Composer</div>
+              </div>
+            </div>
+          </div>
+          <div class="wf-tabbar">
+            <div class="tab active">Network</div><div class="tab">Chat</div><div class="tab">Profile</div>
+          </div>
+        </div>
+        <div class="wf-caption">
+          <span class="num">2.1</span><span class="name">Network feed</span>
+          <div class="note">One post fills the screen, swipe for the next. Tapping the creator tag opens their Profile (3.2).</div>
+        </div>
+      </div>
+
+      <div class="wf-block">
+        <div class="wf-frame modal">
+          <div class="wf-appbar"><span class="icon">Reset</span><span>Filters</span><span class="icon">✕</span></div>
+          <div class="wf-body">
+            <div class="wf-label">Passion</div>
+            <div class="wf-chiprow">
+              <div class="wf-chip">Composer</div><div class="wf-chip ghost">Editor</div><div class="wf-chip ghost">Actor</div><div class="wf-chip ghost">Dancer</div>
+            </div>
+            <div class="wf-label">City</div>
+            <div class="wf-chiprow">
+              <div class="wf-chip">Phoenix, AZ</div><div class="wf-chip ghost">Los Angeles, CA</div><div class="wf-chip ghost">+ Add city</div>
+            </div>
+            <div class="wf-row" style="padding:0.3rem 0;border-top:1px solid #eee;border-bottom:1px solid #eee;">
+              <span class="wf-text">Global (ignore city)</span><span class="wf-toggle off"></span>
+            </div>
+            <div class="wf-btn primary" style="margin-top:0.4rem;">Show results</div>
+          </div>
+        </div>
+        <div class="wf-caption">
+          <span class="num">2.2</span><span class="name">Network filters</span>
+          <div class="note">Two filters, total. Not an auto-detect radius — a specific city, or Global.</div>
+        </div>
+      </div>
+
+      <div class="wf-block">
+        <div class="wf-frame">
+          <div class="wf-appbar"><span class="icon">&lt;</span><span>Theo Brandt</span><span class="icon">⋯</span></div>
+          <div class="wf-body pad-0" style="padding:0.6rem;">
+            <div class="wf-reel" style="min-height:340px;">
+              <div class="center-label">POST (photo / video)</div>
+            </div>
+            <div class="wf-text" style="padding:0.4rem 0 0;">Score demo — moody strings, 90 sec.</div>
+            <div class="wf-chiprow"><div class="wf-chip">Composer</div></div>
+          </div>
+        </div>
+        <div class="wf-caption">
+          <span class="num">2.3</span><span class="name">Post detail (full screen)</span>
+          <div class="note">A closer look before messaging. "⋯" opens Report/Block (6.1).</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= PROFILE ================= -->
+  <section class="section" id="profile">
+    <div class="section-head">
+      <div class="section-eyebrow">03 — Profile</div>
+      <h2>Identity + Posts. That's It.</h2>
+      <p>One layout, two states: full edit controls on your own profile, a Message button in place of those controls on everyone else's.</p>
+    </div>
+    <div class="wf-grid">
+
+      <div class="wf-block">
+        <div class="wf-frame tall">
+          <div class="wf-appbar"><span></span><span>My Profile</span><span class="icon">Edit</span></div>
+          <div class="wf-body scroll">
+            <div style="display:flex;gap:0.6rem;align-items:center;">
+              <div class="wf-avatar lg">IMG</div>
+              <div class="wf-lines">
+                <div class="wf-line dark w-85"></div>
+                <div class="wf-chiprow"><div class="wf-chip">Composer</div><div class="wf-chip">Editor</div></div>
+              </div>
+            </div>
+            <div class="wf-text">About me — one line, optional.</div>
+            <div class="wf-divider"></div>
+            <div class="wf-label">Posts</div>
+            <div class="wf-postgrid">
+              <div class="cell">IMG</div><div class="cell">IMG</div><div class="cell">IMG</div>
+              <div class="cell">IMG</div><div class="cell">IMG</div><div class="cell">+</div>
+            </div>
+          </div>
+          <div class="wf-tabbar">
+            <div class="tab">Network</div><div class="tab">Chat</div><div class="tab active">Profile</div>
+          </div>
+        </div>
+        <div class="wf-caption">
+          <span class="num">3.1</span><span class="name">Own profile (edit mode)</span>
+          <div class="note">Avatar, name, passion tags, optional bio, Posts grid. No portfolio fields, no ratings, no credits.</div>
+        </div>
+      </div>
+
+      <div class="wf-block">
+        <div class="wf-frame tall">
+          <div class="wf-appbar"><span class="icon">&lt;</span><span>Jane Cole</span><span class="icon">⋯</span></div>
+          <div class="wf-body scroll">
+            <div style="display:flex;gap:0.6rem;align-items:center;">
+              <div class="wf-avatar lg">IMG</div>
+              <div class="wf-lines">
+                <div class="wf-line dark w-85"></div>
+                <div class="wf-chiprow"><div class="wf-chip">Actor</div><div class="wf-chip">Dancer</div></div>
+              </div>
+            </div>
+            <div class="wf-btn primary">Message</div>
+            <div class="wf-divider"></div>
+            <div class="wf-label">Posts</div>
+            <div class="wf-postgrid">
+              <div class="cell">IMG</div><div class="cell">IMG</div><div class="cell">IMG</div>
+            </div>
+          </div>
+        </div>
+        <div class="wf-caption">
+          <span class="num">3.2</span><span class="name">Public profile (viewing someone else)</span>
+          <div class="note">Edit controls swapped for one Message button. "⋯" menu holds Report/Block (6.1).</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= CHAT ================= -->
+  <section class="section" id="messaging">
+    <div class="section-head">
+      <div class="section-eyebrow">04 — Chat</div>
+      <h2>Direct Messages Only</h2>
+      <p>No groups, no AI assistant in this pass — just the connective tissue between two people who found each other in Network.</p>
+    </div>
+    <div class="wf-grid">
+
+      <div class="wf-block">
+        <div class="wf-frame">
+          <div class="wf-appbar"><span>Messages</span><span></span></div>
+          <div class="wf-body">
+            <div class="wf-card"><div class="wf-avatar md">IMG</div><div class="wf-lines"><div class="wf-line dark w-70"></div><div class="wf-line w-85"></div></div></div>
+            <div class="wf-card"><div class="wf-avatar md">IMG</div><div class="wf-lines"><div class="wf-line dark w-55"></div><div class="wf-line w-70"></div></div></div>
+            <div class="wf-card"><div class="wf-avatar md">IMG</div><div class="wf-lines"><div class="wf-line dark w-40"></div><div class="wf-line w-55"></div></div></div>
+          </div>
+          <div class="wf-tabbar">
+            <div class="tab">Network</div><div class="tab active">Chat</div><div class="tab">Profile</div>
+          </div>
+        </div>
+        <div class="wf-caption">
+          <span class="num">4.1</span><span class="name">Chat inbox</span>
+          <div class="note">Starts empty. A thread only appears once you tap Message from a profile.</div>
+        </div>
+      </div>
+
+      <div class="wf-block">
+        <div class="wf-frame">
+          <div class="wf-appbar"><span class="icon">&lt;</span><span>Jane Cole</span><span class="icon">⋯</span></div>
+          <div class="wf-body">
+            <div class="wf-msg-col">
+              <div class="wf-msg in">Loved your reel — what gear did you shoot that on?</div>
+              <div class="wf-msg out">RED Komodo, mostly natural light</div>
+            </div>
+            <div class="wf-input" style="margin-top:auto;">Message…</div>
+          </div>
+        </div>
+        <div class="wf-caption">
+          <span class="num">4.2</span><span class="name">Chat window</span>
+          <div class="note">Plain 1:1 messaging. Group chat and an AI assistant are the first thing to add after this loop is proven.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SETTINGS ================= -->
+  <section class="section" id="settings">
+    <div class="section-head">
+      <div class="section-eyebrow">05 — Settings</div>
+      <h2>Account &amp; Legal, Nothing Granular</h2>
+      <p>One menu. No per-field privacy matrix — a single visibility toggle covers it for MVP.</p>
+    </div>
+    <div class="wf-grid">
+
+      <div class="wf-block">
+        <div class="wf-frame">
+          <div class="wf-appbar"><span class="icon">&lt;</span><span>Settings</span><span></span></div>
+          <div class="wf-body pad-0" style="padding:0 0.75rem;">
+            <div class="wf-row-item">Account (name, city)<span class="arrow">&gt;</span></div>
+            <div class="wf-row-item">Profile visible to everyone<span class="wf-toggle on"></span></div>
+            <div class="wf-row-item">Support<span class="arrow">&gt;</span></div>
+            <div class="wf-row-item">Terms of Service<span class="arrow">&gt;</span></div>
+            <div class="wf-row-item">Privacy Policy<span class="arrow">&gt;</span></div>
+            <div class="wf-row-item" style="color:#8a4a3a;">Delete account<span class="arrow">&gt;</span></div>
+          </div>
+        </div>
+        <div class="wf-caption">
+          <span class="num">5.1</span><span class="name">Settings home</span>
+          <div class="note">One toggle instead of a granular "who sees what" screen — that level of control is a v1.1 add once there's more to control.</div>
+        </div>
+      </div>
+
+      <div class="wf-block">
+        <div class="wf-frame">
+          <div class="wf-appbar"><span class="icon">&lt;</span><span>Delete account</span><span></span></div>
+          <div class="wf-body">
+            <div class="wf-imgbox" style="height:50px;">⚠ warning icon</div>
+            <div class="wf-text">This permanently deletes your profile, posts, and messages. This can't be undone.</div>
+            <div class="wf-label">Type DELETE to confirm</div>
+            <div class="wf-input">&nbsp;</div>
+            <div class="wf-btn danger" style="margin-top:auto;">Permanently delete account</div>
+          </div>
+        </div>
+        <div class="wf-caption">
+          <span class="num">5.2</span><span class="name">Delete account</span>
+          <div class="note">Type-to-confirm — deliberately friction-y since it's irreversible.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SAFETY ================= -->
+  <section class="section" id="safety">
+    <div class="section-head">
+      <div class="section-eyebrow">06 — Safety</div>
+      <h2>Report &amp; Block</h2>
+      <p>Kept regardless of how lean everything else is — this connects strangers directly, so it's a liability necessity, not a feature to trim.</p>
+    </div>
+    <div class="wf-grid">
+
+      <div class="wf-block">
+        <div class="wf-frame modal">
+          <div class="wf-appbar"><span></span><span>Report Jane Cole</span><span class="icon">✕</span></div>
+          <div class="wf-body">
+            <div class="wf-row-item">Spam or scam<span class="arrow">&gt;</span></div>
+            <div class="wf-row-item">Fake profile<span class="arrow">&gt;</span></div>
+            <div class="wf-row-item">Inappropriate behavior<span class="arrow">&gt;</span></div>
+            <div class="wf-row-item">Something else<span class="arrow">&gt;</span></div>
+            <div class="wf-divider"></div>
+            <div class="wf-btn danger">Block this user</div>
+          </div>
+        </div>
+        <div class="wf-caption">
+          <span class="num">6.1</span><span class="name">Report / Block user</span>
+          <div class="note">Opened from the "⋯" menu on Profile (3.2) or a chat's header (4.2).</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="doc-footer">
+    <strong>14 screens across 6 sections, 3-tab app.</strong> Everything cut above is real — it's the v1.1 roadmap, not abandoned. This is deliberately the smallest version that still proves "find people who share your passion, through their actual work."
+  </footer>
+
+</div>
