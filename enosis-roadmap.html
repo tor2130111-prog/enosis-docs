@@ -1,14 +1,16 @@
 <style>
   :root{
-    --bg:#0b0f07;
-    --ink:#eef0e6;
-    --muted:#8b9280;
-    --accent:#caff3e;
-    --accent-glow:rgba(202,255,62,0.25);
-    --line:#232a17;
-    --surface:#12160c;
-    --done:#7f9e78;
-    --done-dim:#2a3a26;
+    --bg:#0a0a14;
+    --ink:#eef0f5;
+    --muted:#8f8fa8;
+    --accent:#6ea8ff;
+    --accent-2:#b06bff;
+    --accent-3:#7dffb8;
+    --accent-glow:rgba(110,168,255,0.25);
+    --line:#232238;
+    --surface:#12111f;
+    --done:#6fd99a;
+    --done-dim:#254a35;
     --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', ui-sans-serif, Roboto, Helvetica, Arial, sans-serif;
     --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif;
     --mono: ui-monospace, 'Cascadia Mono', 'SF Mono', Consolas, monospace;
@@ -35,6 +37,9 @@
     font-family:var(--serif); font-weight:400; text-align:center;
     font-size:clamp(2.2rem,6vw,3rem); margin:0 0 0.6rem; letter-spacing:0.01em;
     text-wrap:balance;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2) 55%, var(--accent-3));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    display: inline-block; width: 100%;
   }
   .sub{ text-align:center; color:var(--muted); font-size:1.05rem; margin:0 0 2.2rem; }
 
@@ -51,7 +56,7 @@
   .summary-label{ font-family:var(--mono); font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); }
   .summary-now{ font-family:var(--serif); font-size:1.3rem; color:var(--accent); }
   .bar{ height:8px; background:var(--line); border-radius:4px; overflow:hidden; margin-bottom:0.6rem; }
-  .bar-fill{ height:100%; background:var(--accent); border-radius:4px; }
+  .bar-fill{ height:100%; background:linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3)); border-radius:4px; }
   .bar-caption{ font-family:var(--mono); font-size:0.76rem; color:var(--muted); text-align:right; }
 
   .stages{ display:flex; flex-direction:column; }
@@ -105,10 +110,10 @@
   <div class="summary">
     <div class="summary-top">
       <span class="summary-label">Current stage</span>
-      <span class="summary-now">Onboarding</span>
+      <span class="summary-now">Environment Setup</span>
     </div>
-    <div class="bar"><div class="bar-fill" style="width:25%;"></div></div>
-    <div class="bar-caption">2 of 8 stages complete</div>
+    <div class="bar"><div class="bar-fill" style="width:12%;"></div></div>
+    <div class="bar-caption">1 of 8 stages complete</div>
   </div>
 
   <div class="stages">
@@ -121,18 +126,18 @@
       </div>
     </div>
 
-    <div class="stage done">
+    <div class="stage active">
       <div class="stage-rail"><div class="dot"></div><div class="stage-line"></div></div>
       <div class="stage-body">
-        <div class="stage-head"><span class="stage-title">Environment Setup</span><span class="pill done">Complete</span></div>
+        <div class="stage-head"><span class="stage-title">Environment Setup</span><span class="pill active">In Progress</span></div>
         <div class="stage-desc">Connecting the project's codebase, database, and hosting so building can begin.</div>
       </div>
     </div>
 
-    <div class="stage active">
+    <div class="stage">
       <div class="stage-rail"><div class="dot"></div><div class="stage-line"></div></div>
       <div class="stage-body">
-        <div class="stage-head"><span class="stage-title">Onboarding</span><span class="pill active">In Progress</span></div>
+        <div class="stage-head"><span class="stage-title">Onboarding</span><span class="pill planned">Planned</span></div>
         <div class="stage-desc">Creating an account and setting up a profile for the first time.</div>
       </div>
     </div>
