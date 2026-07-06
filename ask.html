@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="icon.png">
+<title>Ask a Question — Spotlight Enosis</title>
+<style>
+  :root{
+    --bg:#0a0a14;
+    --ink:#eef0f5;
+    --muted:#8f8fa8;
+    --accent:#6ea8ff;
+    --accent-2:#b06bff;
+    --accent-3:#7dffb8;
+    --accent-glow:rgba(110,168,255,0.25);
+    --line:#2c2a45;
+    --surface:#12111f;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', ui-sans-serif, Roboto, Helvetica, Arial, sans-serif;
+    --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif;
+    --mono: ui-monospace, 'Cascadia Mono', 'SF Mono', Consolas, monospace;
+  }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse 640px 320px at 50% -60px, var(--accent-glow), transparent 70%),
+      var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.6;
+  }
+  .page{ max-width:680px; margin:0 auto; padding:3.5rem 2rem 5rem; }
+  .icon{
+    display:block; width:72px; height:72px; margin:0 auto 1.1rem;
+    filter: drop-shadow(0 0 18px var(--accent-glow));
+    mix-blend-mode: screen;
+  }
+  .eyebrow{
+    font-family:var(--mono); font-size:0.72rem; font-weight:700;
+    letter-spacing:0.22em; text-transform:uppercase; color:var(--accent);
+    text-align:center; margin-bottom:0.9rem;
+  }
+  h1{
+    font-family:var(--serif); font-weight:400; text-align:center;
+    font-size:clamp(1.9rem,5vw,2.5rem); margin:0 0 0.6rem;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2) 55%, var(--accent-3));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .sub{ text-align:center; color:var(--muted); margin:0 0 2.4rem; font-size:1rem; }
+
+  .form-wrap{
+    background:var(--surface); border:1px solid var(--line);
+    padding:1.2rem; overflow:hidden;
+  }
+  .form-wrap iframe{ width:100%; border:none; display:block; min-height:640px; }
+
+  .placeholder{
+    text-align:center; color:var(--muted); font-size:0.92rem; padding:3rem 1.5rem;
+  }
+  .placeholder code{
+    display:block; margin-top:1rem; background:var(--bg); border:1px solid var(--line);
+    padding:0.8rem; font-family:var(--mono); font-size:0.78rem; color:var(--accent-3);
+    text-align:left; overflow-x:auto;
+  }
+
+  footer{ text-align:center; color:var(--muted); font-size:0.78rem; margin-top:3rem; font-family:var(--mono); }
+  footer a{ color:var(--muted); }
+</style>
+</head>
+<body>
+  <div class="page">
+    <img class="icon" src="icon.png" alt="Spotlight Enosis icon">
+    <div class="eyebrow">Get in touch</div>
+    <h1>Ask a Question</h1>
+    <p class="sub">Don't see your question on the FAQ? Ask us directly below.</p>
+
+    <div class="form-wrap">
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd3TlsHlW2Ac13vYTmXy22dcGFhYXY6ZrByZNtmXq5A93aVoQ/viewform?embedded=true">Loading…</iframe>
+    </div>
+
+    <footer><a href="index.html">← Back to project docs</a> · <a href="faq.html">FAQ</a></footer>
+  </div>
+</body>
+</html>
